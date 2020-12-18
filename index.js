@@ -1,32 +1,11 @@
 const Koa = require("koa");
+const koaStatic = require("./koa-static");
 const app = new Koa();
-
-app.use(require("./format-json"));
-
-app.use(function (ctx, next) {
-    const user = {
-        loginId: "dengge",
-        name: "邓哥"
-    };
-    app.emit("abc", 123);
-    ctx.state.user = user;
-    next();
-});
+const path = require("path");
+app.use(require("./koa-fallback"));
+app.use(koaStatic(path.resolve(__dirname, "public")));
 
 
-app.use(function (ctx, next) {
-    console.log(ctx.status);
-    ctx.body = {
-        loginId: "dengge",
-        name: "邓哥"
-    };
-    next();
-});
-
-
-app.on("abc", function (data) {
-  console.log(data);
-})
 
 
 
